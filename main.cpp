@@ -5,21 +5,25 @@
 #include <stdlib.h>
 #include "matrix/Matrix.h"
 #include "matrix/Vector.h"
+#include "getData.h"
 
 
 int main(int argc, char* argv[]) {
 
-	int errorLimit = 1;
+	char *filename = new char[100];
+	strcpy(filename, "out.txt");
+	
+	string Pattern = ReturnString(filename,0).substr(0,32);
+
+	int errorLimit = 10;
 	//string alphabet = "abcdefghijklmnopqrstuvwxyz";
-	string alphabet = "helowdcagrun ";
-	string Pattern = "hello w";
-	string Text = "hello world chao huang";
+	string alphabet = "GTAC ";
+	//string Pattern = "hall";
+	//string Text = "hello world chao huang";
 
 	int patternLength = Pattern.length();
 	int alphabetSize = alphabet.length();
-	int textLength = Text.length();
-
-
+	//int textLength = Text.length();
 
 	Matrix S;
 	S.setsize(patternLength, alphabetSize);
@@ -33,35 +37,42 @@ int main(int argc, char* argv[]) {
 
 	std::vector<Matrix> SinglePatternResult;
 
-	SinglePatternResult.push_back(getExactMatchMatrix(Pattern,Text,sMap));
 
-	for (int i = 0;i < errorLimit ;i ++)
-	{
-		SinglePatternResult.push_back(getNextMatrix(Pattern,Text,sMap,SinglePatternResult[i],i));
+    for (int j = 1;j < 100 ;j++)
+    {
+		string Text = ReturnString(filename,j);
+		SinglePatternResult.clear();
+		SinglePatternResult.push_back(getExactMatchMatrix(Pattern,Text,sMap));
 
-	}
-
-	/*for (int i = 0;i < SinglePatternResult.size() ;i ++)
-	{
-  		std::cout<<SinglePatternResult[i]<<std::endl;
-  		cout<<"-------------------------------------------------------"<<endl;
-	}*/
-
-  	Vector outputResult(SinglePatternResult[errorLimit][Pattern.length()-1]);
-  	int posnum = 0;
-  	int *pos = new int[Text.length()];
-
-	for (int i = 0;i < outputResult.getn() ;i ++)
-	{
-		if (outputResult[i] == 1)
+		for (int i = 0;i < errorLimit ;i ++)
 		{
-			cout<<"find it @ position " <<' '<< i+1 <<endl;
-			pos[posnum] = i;
-			++ posnum;
+			SinglePatternResult.push_back(getNextMatrix(Pattern,Text,sMap,SinglePatternResult[i],i));
+
 		}
+
+		/*for (int i = 0;i < SinglePatternResult.size() ;i ++)
+		{
+	  		std::cout<<SinglePatternResult[i]<<std::endl;
+	  		cout<<"-------------------------------------------------------"<<endl;
+		}*/
+
+	  	Vector outputResult(SinglePatternResult[errorLimit][Pattern.length()-1]);
+	  	int posnum = 0;
+	  	int *pos = new int[Text.length()];
+
+		for (int i = 0;i < outputResult.getn() ;i ++)
+		{
+			if (outputResult[i] == 1)
+			{
+				cout<<"find it @ position " <<' '<< i+1 << " in "<<j<<" sequence!!!"<<endl;
+				pos[posnum] = i;
+				++ posnum;
+			}
+		}
+		if(posnum == 0 )
+			cout<<"not find in "<<j<<" sequence!!!"<<endl;
+		delete []pos;
 	}
-	if(posnum == 0 )
-		cout<<"not find" <<endl;
 
 
 
@@ -89,6 +100,7 @@ int main(int argc, char* argv[]) {
   	test2.set(input2);
 
   	cout<<vector_AND_Operate(test,test2)<<endl;*/
+  	delete []filename;
 	 return 0;
 }
 
