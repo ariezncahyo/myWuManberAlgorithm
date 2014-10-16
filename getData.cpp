@@ -98,8 +98,3 @@ void WringNewFile(char *filename, char *outFileName)
         return;  
     }   
 }  
-
-/*int main()
-{
-    return 0;
-}*/

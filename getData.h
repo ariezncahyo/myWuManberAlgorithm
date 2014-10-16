@@ -1,7 +1,7 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
-
+/*---  file operation -----*/
 /*
 return how man lines in the file
 input: filename

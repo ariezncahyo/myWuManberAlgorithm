@@ -166,13 +166,89 @@ Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vect
 		deleteVector = vector_OR_Operate(vector_AND_Operate( vectorShift(deleteVector), sMap[Text[i]] ), vectorShift(tmpCurrentMatrix[i]));
 		substiVector = vector_OR_Operate(vector_AND_Operate( vectorShift(substiVector), sMap[Text[i]] ), vectorShift(tmpCurrentMatrix[i-1]));
 		finalVector = vector_OR_Operate( vector_OR_Operate( vector_AND_Operate( vectorShift(finalVector), sMap[Text[i]] ), vectorShift( vector_OR_Operate( tmpCurrentMatrix[i-1],tmpCurrentMatrix[i] ) ) ), tmpCurrentMatrix[i-1] );
+
+		/*--- there will be three modification: insert, delete and substitution-----*/  
+
 		//newMatrix[i] = vector_OR_Operate(vector_OR_Operate(insertVector,deleteVector), substiVector);
-		//newMatrix[i] = substiVector;
-		newMatrix[i] = finalVector;
+		newMatrix[i] = insertVector;
+		//newMatrix[i] = finalVector;
 	}
 
 	newMatrix = newMatrix.transpose();
 	
 	return  newMatrix;
 
+}
+
+// print the pattern and text using the errorPosVector
+void printMatch(const std::string Text, const std::string Pattern, const std::vector<int>unmatchPosVector){
+
+	int textSize = Text.size();
+	int lines = textSize / 100;
+	int i = 0,j = 0;
+	int errorCount = 0;
+	for (i;i <= lines ;++i)
+	{
+		cout<<Text.substr(i*100,100)<<endl;
+		if( unmatchPosVector[errorCount]< (i+1)*100 )
+		{
+			cout<<Pattern.substr(i*100,unmatchPosVector[errorCount]-i*100)<<" ";//first part
+			for (j; j<unmatchPosVector.size();j ++)
+			{
+				cout<<Pattern.substr(i*100+unmatchPosVector[errorCount],unmatchPosVector[errorCount+1]-unmatchPosVector[errorCount])<<" ";
+				++errorCount;
+				if( unmatchPosVector[errorCount] > (i+1)*100 )
+					break;
+			}
+		}
+		else
+		{
+			cout<<Pattern.substr(i*100,100);
+		}
+		cout<<endl;
+	}
+}
+
+// local search between Text and Pattern
+/*
+input:
+	TEXT: TEXT input has already selected by the algorithm, so the TEXT should always be the best fix for the PATTERM.
+	PATTERN: test string
+	erroorCount: error amount that we can bear 
+output:
+	vector: it contains numbers that need to insert in the PATTERN
+
+ps: insert always means insert into tht pattern string
+*/
+std::vector<int> localInsertSearch(const std::string Text, const std::string Pattern,const int errorCount)
+{
+	std::vector<int> unmatchPosVector;
+	/*---- for insert part -----*/
+	int textSize = Text.size();
+	int patternSize = Pattern.size();
+	int startPos = 0,num,i;
+
+	std::string::const_iterator pattern_Ptr = Pattern.begin();
+	std::string::const_iterator text_Ptr = Text.begin();
+
+	while(startPos <= errorCount)
+	{
+		num = 0;
+		for (i = 0 ;i <patternSize; i++)
+		{
+			if(*( pattern_Ptr + i ) != *( text_Ptr + i + startPos + num ))
+			{
+				num++;
+				if(num > errorCount)
+					break;
+				cout<<"i = "<<i<<endl;
+				unmatchPosVector.push_back(i); 
+				i--;
+			}
+		}
+		if(i == Pattern.size())
+			break;
+		startPos ++;
+	}
+	return unmatchPosVector;
 }
