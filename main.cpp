@@ -7,7 +7,7 @@
 #include "matrix/Vector.h"
 #include "getData.h"
 
-const int errorLimit = 2;
+const int errorLimit = 1;
 
 
 int main(int argc, char* argv[]) {
@@ -21,12 +21,13 @@ int main(int argc, char* argv[]) {
 
  //sample on the pdf
 
-	string alphabet = "abcd";
-	string Pattern = "abc";//aabac
+	std::string alphabet = "abc";
 
-	std::string Text = "dabac";//insert modification Text string
+	std::string Pattern = "aabac";//aabac
 
-	//string Text = "aabaacaabacab";
+	//std::string Text = "abacabac";//insert modification Text string
+
+	string Text = "aabaacaabacab";
 
 /*	// DNA sequence
 	
@@ -42,9 +43,10 @@ int main(int argc, char* argv[]) {
 
 	string alphabet = "GTAC ";
 */
-/*
+
 	int patternLength = Pattern.length();
 	int alphabetSize = alphabet.length();
+	int textSize = Text.length();
 
 	Matrix S;
 	S.setsize(patternLength, alphabetSize);
@@ -56,42 +58,63 @@ int main(int argc, char* argv[]) {
 	sMap = sMapInit(S,alphabet);
 
 	std::vector<Matrix> SinglePatternResult;
-
+	std::vector<Matrix> SinglePatternResult_Insert;
+	std::vector<Matrix> SinglePatternResult_Delete;
+	std::vector<Matrix> SinglePatternResult_Substi;
 
 	SinglePatternResult.clear();
 	SinglePatternResult.push_back(getExactMatchMatrix(Pattern,Text,sMap));
+	SinglePatternResult_Insert.push_back(getExactMatchMatrix(Pattern,Text,sMap));
+	SinglePatternResult_Delete.push_back(getExactMatchMatrix(Pattern,Text,sMap));
+	SinglePatternResult_Substi.push_back(getExactMatchMatrix(Pattern,Text,sMap));
 
-	for (int i = 0;i < errorLimit ;i ++)
-		SinglePatternResult.push_back(getNextMatrix(Pattern,Text,sMap,SinglePatternResult[i],i));
-*/
-/*
-	//print the result matrix R
-	for (int i = 0;i < SinglePatternResult.size() ;i ++)
-	{
-  		std::cout<<SinglePatternResult[i]<<std::endl;
-  		cout<<"-------------------------------------------------------"<<endl;
+	Matrix InsertMatrix,DeleteMatrix,SubstiMatrix;
+	InsertMatrix.setsize(textSize,patternLength);
+	DeleteMatrix.setsize(textSize,patternLength);
+	SubstiMatrix.setsize(textSize,patternLength);
+
+
+
+
+	for (int i = 0;i < errorLimit ;i ++){
+		SinglePatternResult.push_back(getNextMatrix(Pattern,Text,sMap,SinglePatternResult[i],i,InsertMatrix,DeleteMatrix,SubstiMatrix));
+		SinglePatternResult_Insert.push_back(InsertMatrix);
+		SinglePatternResult_Delete.push_back(DeleteMatrix);
+		SinglePatternResult_Substi.push_back(SubstiMatrix);
 	}
-*/
+
+	//print the result matrix R
+	 
+	for (int i = 0;i < Text.size() ;i++)
+	{
+		cout<<'\t'<<Text[i];//<<'\t';
+	}
+	cout<<endl;
+	cout<<Pattern<<endl;
+	cout<<"insert matrix"<<endl;
+  	std::cout<<SinglePatternResult_Insert[errorLimit-1]<<std::endl;
+	cout<<"delete matrix"<<endl;
+  	std::cout<<SinglePatternResult_Delete[errorLimit-1]<<std::endl;
+	cout<<"substi matrix"<<endl;
+  	std::cout<<SinglePatternResult_Substi[errorLimit-1]<<std::endl;
+  	cout<<"-------------------------------------------------------"<<endl;
+
+
 
 
   	// outputResult is the key result of our algorithm
   	//Vector outputResult(SinglePatternResult[errorLimit][Pattern.length()-1]);
 
 
+/*	
   	std::vector<int> tmpvector = localInsertSearch(Text,Pattern,errorLimit);
   	cout<<"insert position is: ";
   	for (int i=0;i<tmpvector.size();i++){
   		cout<<tmpvector[i]<<'\t';
 	}
 	cout<<endl;
-	//cout<<"unmatched vector's size is "<<tmpvector.size()<<"  finished"<<endl;
 	printMatch(Text,Pattern,tmpvector);
-
-
-
-
-
-
+*/
 
 /*
   	int posnum = 0;

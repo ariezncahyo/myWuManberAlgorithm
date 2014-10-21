@@ -58,9 +58,6 @@ Vector vectorShift(Vector inputVector)
 		inputVector[i] = inputVector[i-1];  
 	}
 	inputVector[0] = 1;
-
-	//std::cout<<inputVector<<std::endl;
-
 	return inputVector;
 }
 
@@ -112,18 +109,16 @@ Matrix getExactMatchMatrix(const string Pattern, const string Text, std::map<cha
 
 	for (int i = 1;i < Text.length() ; i++)
 	{
-		//cout<<tmpVector<<'\t'<<sMap[Text[i]]<<endl;
 		tmpVector = vector_AND_Operate( vectorShift(tmpVector), sMap[Text[i]] );
 		resultMatrix[i] = tmpVector;
 	}
 	resultMatrix = resultMatrix.transpose();
-	//cout<<resultMatrix<<endl;
   	delete []tmparray;
 	return resultMatrix;
 }
 
 
-Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vector> sMap, const Matrix CurrentMatrix,int errorCount)
+Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vector> sMap, const Matrix CurrentMatrix, int errorCount, Matrix &insertMatrix, Matrix &deleteMatrix, Matrix &substiMatrix)
 {
 	Matrix newMatrix;
 	Matrix tmpCurrentMatrix (CurrentMatrix);
@@ -156,8 +151,6 @@ Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vect
 	substiVector.set(tmparray);
 	finalVector.set(tmparray);
 
-	//newMatrix[0] = vector_OR_Operate(vector_OR_Operate(insertVector,deleteVector), substiVector);
-	//newMatrix[0] = substiVector;
 	newMatrix[0] = insertVector;
 
 	for (int i = 1;i < Text.length() ; i++)
@@ -169,9 +162,12 @@ Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vect
 
 		/*--- there will be three modification: insert, delete and substitution-----*/  
 
-		//newMatrix[i] = vector_OR_Operate(vector_OR_Operate(insertVector,deleteVector), substiVector);
-		newMatrix[i] = insertVector;
-		//newMatrix[i] = finalVector;
+
+		insertMatrix[i] = insertVector;
+		deleteMatrix[i] = deleteVector;
+		substiMatrix[i] = substiVector;
+
+		newMatrix[i] = finalVector;
 	}
 
 	newMatrix = newMatrix.transpose();
