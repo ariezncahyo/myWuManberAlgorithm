@@ -1,0 +1,14 @@
+Data explanation:
+
+onlydata.txt: that contains all the data in pb.fasta without any channel information
+pb.fasta: a big data which has less error information
+
+mainfucntions:
+
+main_getLongest: 
+	get the longest string in datafolder and write it into a file.
+	Write rest of the string also into a string
+
+main_testTime:
+	test how long does this program runs
+	

@@ -117,7 +117,9 @@ Matrix getExactMatchMatrix(const string Pattern, const string Text, std::map<cha
 	return resultMatrix;
 }
 
-
+/*
+--- this getNextMatrix function can change Matrix including insert, delete and sub ---
+*/
 Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vector> sMap, const Matrix CurrentMatrix, int errorCount, Matrix &insertMatrix, Matrix &deleteMatrix, Matrix &substiMatrix)
 {
 	Matrix newMatrix;
@@ -173,10 +175,66 @@ Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vect
 	newMatrix = newMatrix.transpose();
 	
 	return  newMatrix;
-
 }
 
-// print the pattern and text using the errorPosVector
+/*
+--- this edition is just for final result  ---
+*/
+
+Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vector> sMap, const Matrix CurrentMatrix, int errorCount)
+{
+	Matrix newMatrix;
+	Matrix tmpCurrentMatrix (CurrentMatrix);
+	tmpCurrentMatrix = tmpCurrentMatrix.transpose();
+	newMatrix.setsize(Pattern.length(),Text.length());
+	newMatrix = newMatrix.transpose();
+
+	Vector insertVector;
+	Vector deleteVector;
+	Vector substiVector;
+	Vector finalVector;
+
+	insertVector.setsize(Pattern.length());
+	deleteVector.setsize(Pattern.length());
+	substiVector.setsize(Pattern.length());
+	finalVector.setsize(Pattern.length());
+	
+	double *tmparray = new double[Pattern.length()];
+	for (int i = 0;i < Pattern.length() ; i++)
+	{
+		if (i < errorCount)
+			tmparray[i] = 1;
+		else
+			tmparray[i] = 0;
+	}
+
+
+	insertVector.set(tmparray);
+	deleteVector.set(tmparray);
+	substiVector.set(tmparray);
+	finalVector.set(tmparray);
+
+	newMatrix[0] = insertVector;
+
+	for (int i = 1;i < Text.length() ; i++)
+	{
+		insertVector = vector_OR_Operate(vector_AND_Operate( vectorShift(insertVector), sMap[Text[i]] ), tmpCurrentMatrix[i-1]);
+		deleteVector = vector_OR_Operate(vector_AND_Operate( vectorShift(deleteVector), sMap[Text[i]] ), vectorShift(tmpCurrentMatrix[i]));
+		substiVector = vector_OR_Operate(vector_AND_Operate( vectorShift(substiVector), sMap[Text[i]] ), vectorShift(tmpCurrentMatrix[i-1]));
+		finalVector = vector_OR_Operate( vector_OR_Operate( vector_AND_Operate( vectorShift(finalVector), sMap[Text[i]] ), vectorShift( vector_OR_Operate( tmpCurrentMatrix[i-1],tmpCurrentMatrix[i] ) ) ), tmpCurrentMatrix[i-1] );
+
+		/*--- there will be three modification: insert, delete and substitution-----*/  
+
+		newMatrix[i] = finalVector;
+	}
+
+	newMatrix = newMatrix.transpose();
+	
+	return  newMatrix;
+}
+/*
+----- Print the pattern and text using the errorPosVector
+*/
 void printMatch(const std::string Text, const std::string Pattern, const std::vector<int>unmatchPosVector){
 
 	int textSize = Text.size();

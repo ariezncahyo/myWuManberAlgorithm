@@ -72,7 +72,7 @@ output:
 
 */
 
-void WringNewFile(char *filename, char *outFileName)  
+void WriteNewFile(char *filename, char *outFileName)  
 {  
     ifstream ReadFile;  
     ofstream WriteFile;
@@ -93,8 +93,74 @@ void WringNewFile(char *filename, char *outFileName)
             if (tmp[0] == '>')
             	continue;
         }  
+        WriteFile<<tmp<<std::endl;// write the string to the file
         ReadFile.close();
         WriteFile.close();  
         return;  
     }   
 }  
+
+/*
+find the longest string in the text
+
+input: filename
+output: the longest string itself
+
+*/
+std::string getLongestString(char *filename)
+{
+    ifstream ReadFile;  
+    string tmp; 
+    int maxSize = 0; 
+    int count = 0;
+    int maxLineNumber = 0;
+    ReadFile.open(filename,ios::in);
+    if(ReadFile.fail())
+    {  
+        return 0;  
+    }  
+    else
+    {  
+        while(getline(ReadFile,tmp,'\n'))  
+        {  
+            //std::cout<<tmp.length()<<std::endl;
+            if(tmp.length() > maxSize){
+                maxSize = tmp.length();
+                maxLineNumber = count; 
+            }
+            count++;
+        }  
+
+        tmp = ReturnString(filename,maxLineNumber); 
+       
+        ReadFile.close();  
+        std::cout<<"sequence number is "<< maxLineNumber <<std::endl;
+        return tmp;  
+    }   
+}
+
+
+
+/*
+--- write the string to the file
+input: filename
+        input string
+output: null
+*/
+
+void writeStringToFile(char* filename, std::string inputString)
+{
+    ofstream WriteFile;
+    WriteFile.open(filename,ios::out | ios::app);
+
+    if(WriteFile.fail())
+    {  
+        return;  
+    }  
+    else
+    {  
+        WriteFile<<inputString<<std::endl;  
+        WriteFile.close();  
+        return;  
+    }   
+}

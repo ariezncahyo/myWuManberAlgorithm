@@ -7,7 +7,7 @@ return how man lines in the file
 input: filename
 output: number of lines in this file
 */
-int CountLines(char *filename);  
+int CountLines(char *);  
 
 /*
 return a specific given the lines
@@ -18,7 +18,7 @@ output:
 	tmp: specific string
 */
 	
-std::string ReturnString(char *filename,int selectNum);  
+std::string ReturnString(char *,int );  
 
 /*
 write new file through an old file
@@ -28,4 +28,23 @@ output:
 	outFileName: new file name
 
 */
-void WringNewFile(char *filename, char *outFileName);  
+void WriteNewFile(char *, char *);  
+/*
+find the longest string in the text
+
+input: filename
+output: the longest string itself
+
+*/
+
+std::string getLongestString(char *);
+
+
+
+/*
+--- write the string to the file
+input: filename
+        input string
+output: null
+*/
+void writeStringToFile(char*, std::string);

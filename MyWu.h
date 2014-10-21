@@ -18,7 +18,9 @@ Vector vector_OR_Operate(Vector lhs,Vector rhs);
 
 Matrix getExactMatchMatrix(const string Pattern, const string Text, std::map<char,Vector> sMap);
 
-Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vector> sMap, const Matrix CurrentMatrix, int errorCount, Matrix &insertMatrix, Matrix &deleteMatrix, Matrix &substiMatrix);
+//Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vector> sMap, const Matrix CurrentMatrix, int errorCount, Matrix &insertMatrix, Matrix &deleteMatrix, Matrix &substiMatrix);
+
+Matrix getNextMatrix(const string Pattern, const string Text, std::map<char,Vector> sMap, const Matrix CurrentMatrix, int errorCount);
 
 void printMatch(const std::string text, const std::string pattern, const std::vector<int> resultVector);
 
