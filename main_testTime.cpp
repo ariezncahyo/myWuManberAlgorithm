@@ -17,13 +17,13 @@ int main(int argc, char* argv[]) {
 
 	clock_t start, end;
 	start = clock();
+
 	// pattern part
 	char *patternFilename = new char[100];
 	strcpy(patternFilename, "../datafolder/onlydata.txt");
 	int totalCheckNumberLine = CountLines(patternFilename);
 	int patternLength;
 
-	//string Pattern = ReturnString(patternFilename,0).substr(0,32);
 
 	// text part
 	char *textFilename = new char[100];
@@ -34,16 +34,16 @@ int main(int argc, char* argv[]) {
 	string alphabet = "GTAC ";
 	int alphabetSize = alphabet.length();
 
-
+	//alphabet matrix S
 	Matrix S;
 	std::map<char,Vector> sMap;
 
-
+	//result Matrix
 	std::vector<Matrix> SinglePatternResult;
 
     for (int j = 0; j <= totalCheckNumberLine ;j++)
     {
-    	if(j == 57054) return 0;
+    	if(j == 57054) continue;
 
 		string Pattern = ReturnString(patternFilename,j).substr(0,32);
 		patternLength = Pattern.length();
@@ -77,16 +77,17 @@ int main(int argc, char* argv[]) {
 				++ posnum;
 			}
 		}
-		if(posnum == 0 )
-			cout<<"not find in "<<j<<" sequence!!!"<<endl;
+		//if(posnum == 0 )
+		//	cout<<"not find in "<<j<<" sequence!!!"<<endl;
 		delete []pos;
 	}
   	delete []textFilename;
   	delete []patternFilename;
+  	
   	end = clock();
 
+  	// show the clock elipse time
  	std::cout<<"Run time: "<<(double)(end - start) / CLOCKS_PER_SEC<<" s"<<std::endl;
-  	//std::cout<< "cost time is " << start - end <<std::endl;
 	return 0;
 }
 

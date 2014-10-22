@@ -1,9 +1,15 @@
+Part 1. 
+
 Data explanation:
 
 onlydata.txt: that contains all the data in pb.fasta without any channel information
 pb.fasta: a big data which has less error information
 
-mainfucntions:
+
+
+Part 2.
+
+Different mainfucntions:
 
 main_getLongest: 
 	get the longest string in datafolder and write it into a file.
@@ -12,3 +18,12 @@ main_getLongest:
 main_testTime:
 	test how long does this program runs
 	
+
+Part 3.
+
+globel searching: 
+I. Using Wu-Menber method to get the which pattern in text could be regarded as the right matching.
+
+
+local searching:
+I. tell insert, delete and modification apart using edit distance

@@ -306,3 +306,18 @@ std::vector<int> localInsertSearch(const std::string Text, const std::string Pat
 	}
 	return unmatchPosVector;
 }
+
+
+/*
+* edition distance function
+* input:
+	pattern string and text string
+* output:
+	value for edition distance
+
+PS: we can use edition distance to konw which error cost least is better
+*/
+
+int editionDistance(std::string pattern, std::string text){
+
+}
