@@ -8,7 +8,7 @@ int main(){
 	char *outputfile = new char[100];
 
 	strcpy(inputfile, "../datafolder/onlydata.txt");
-	strcpy(outputfile,"../datafolder/longest.text");
+	strcpy(outputfile,"../datafolder/longest.txt");
 
 
 	//std::string longString = getLongestString(inputfile);
