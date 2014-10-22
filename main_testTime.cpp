@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 
     for (int j = 0; j <= totalCheckNumberLine ;j++)
     {
-    	if(j == 57054) return 0;
+    	if(j == 57054) continue;
 
 		string Pattern = ReturnString(patternFilename,j).substr(0,32);
 		patternLength = Pattern.length();
@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
 			}
 		}
 		if(posnum == 0 )
-			cout<<"not find in "<<j<<" sequence!!!"<<endl;
+			cout<<j<<" sequence!!!"<<endl;
 		delete []pos;
 	}
   	delete []textFilename;
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
   	end = clock();
 
  	std::cout<<"Run time: "<<(double)(end - start) / CLOCKS_PER_SEC<<" s"<<std::endl;
-  	//std::cout<< "cost time is " << start - end <<std::endl;
+	
 	return 0;
 }
 

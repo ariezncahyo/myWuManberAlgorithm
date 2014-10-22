@@ -1,4 +1,4 @@
-CC = clang++
+CC = g++
 main = main_testTime
 
 
